@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: gamevault-secure
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: cd backend && gunicorn server:app --bind 0.0.0.0:$PORT
+    healthCheckPath: /
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: COOKIE_SECURE
+        value: "1"
+      - key: ADMIN_USERNAME
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: ADMIN_REVEAL_CODE
+        sync: false
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: GAME_PASSWORD_KEY
+        sync: false

@@ -1,0 +1,42 @@
+GAMEVAULT — HƯỚNG DẪN NGẮN GỌN
+
+MỤC TIÊU
+- Chạy thử trên máy: dùng SQLite, không cần thẻ ngân hàng.
+- Đưa lên mạng: dùng Render Free + Neon PostgreSQL. Hai dịch vụ có thể thay đổi giới hạn miễn phí; hãy xem điều khoản hiện tại trước khi triển khai.
+
+A. CHẠY THỬ TRÊN MÁY WINDOWS
+1. Cài Python 3.11 hoặc mới hơn từ python.org; nếu có lựa chọn, tích “Add Python to PATH”.
+2. Giải nén ZIP.
+3. Mở thư mục GAMEVAULT_secure đã giải nén.
+4. Nhân đôi file .env.example rồi đổi tên bản sao thành .env.
+5. Mở .env bằng Notepad và thay các giá trị mẫu:
+   ADMIN_USERNAME=admin
+   ADMIN_PASSWORD=đặt_mật_khẩu_mạnh_riêng
+   ADMIN_REVEAL_CODE=đặt_mã_riêng_khác_mật_khẩu
+   SESSION_SECRET=chuỗi_dài_ngẫu_nhiên
+   GAME_PASSWORD_KEY=để trống nếu chưa có dữ liệu mật khẩu game cần giữ; xem lưu ý bên dưới
+   COOKIE_SECURE=0
+   DATABASE_URL=
+6. Mở Command Prompt trong thư mục GAMEVAULT_secure và chạy:
+   py -m venv .venv
+   .venv\Scripts\activate
+   py -m pip install -r requirements.txt
+   py backend\server.py
+7. Mở trình duyệt tới http://127.0.0.1:5000
+8. Đăng nhập bằng ADMIN_USERNAME và ADMIN_PASSWORD trong .env.
+
+LƯU Ý QUAN TRỌNG VỀ GAME_PASSWORD_KEY
+- Nếu bạn đang có dữ liệu mật khẩu game đã mã hóa từ bản cũ, phải giữ đúng GAME_PASSWORD_KEY cũ. Đừng tạo khóa mới hoặc để trống trước khi sao lưu/chuyển dữ liệu.
+- Không gửi file .env, URL Neon hoặc mật khẩu lên chat/GitHub.
+
+B. ĐƯA LÊN MẠNG
+Cần có tài khoản GitHub, Render và Neon. Bạn phải tự đăng nhập và bấm xác nhận trên các trang này; không cần gửi mật khẩu cho người khác.
+1. Tạo project PostgreSQL trên Neon Free và sao chép connection string riêng tư.
+2. Đưa thư mục mã nguồn lên một repository GitHub riêng tư; tuyệt đối không đưa .env, file .db hay file backup lên GitHub.
+3. Vào Render, chọn New > Blueprint, kết nối repository có render.yaml.
+4. Nếu Render hiện các biến cần nhập, đặt DATABASE_URL bằng URL Neon; đặt ADMIN_USERNAME, ADMIN_PASSWORD, ADMIN_REVEAL_CODE và GAME_PASSWORD_KEY theo hướng dẫn trong README.md.
+5. Deploy rồi thử đăng nhập và các chức năng trước khi đưa dữ liệu thật vào.
+
+Nếu đã có dữ liệu SQLite cần chuyển sang Neon, ĐỪNG làm bước B ngay. Hãy sao lưu file database và làm theo phần “Sao lưu SQLite” và “Công cụ chuyển dữ liệu” trong README.md trước. Chỉ chạy công cụ chuyển dữ liệu trên database PostgreSQL trống.
+
+Không có gì trong gói này yêu cầu bạn gửi mật khẩu hoặc khóa bí mật cho người hỗ trợ.
